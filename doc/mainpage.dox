@@ -1,0 +1,55 @@
+/*! \mainpage HPE Vertica Flexible Table Package
+ *
+ * \ref install_sec \n
+ * \ref test_sec \n
+ * \ref usage_sec \n
+ * \ref techoverview_sec \n
+ *
+ *
+ *
+ * \section install_sec Compiling FlexTable Package
+ *
+ * To compile the FlexTable library, simply execute "make" in the directory where you checked out the FlexTable source code. Flex Avro Parser depends on the Boost C++ library, which is not included as part of the FlexTable source code bundle. See the README file for instructions to compile the Flex Avro Parser.
+ *
+ * \section test_sec Testing FlexTable Package
+ *
+ * After you compile the FlexTable library, you can test it by executing "make flex_test" from the same directory. The test creates a subset of Flex functions to load and query semi-structured data. You need to be a superuser in order to run the FlexTable tests.
+ *
+ * \section usage_sec VMap API Usage
+ *
+ * To use the VMap API, simply #include VMap.h in your code, and make sure that VMap.cpp is compiled along with the rest of your source files.
+ *
+ *
+ * \section techoverview_sec VMap API Technical Overview
+ *
+ * The VMap API is organized into separate helpers specific to your use case.
+ *
+ * It is targeted at two different included representations of a VMap:
+ *
+ *      1. The V1 (latest) on-disk VMap "Block" format, represented by the
+ *         MapBlock/MapV1ValuesBlock/MapV1ValuesBlock classes. This format is heavily optimized for
+ *         read, and due to lookups, must be fully regenerated to apply any change (no incremental
+ *         update possible.)
+ *
+ *      2. Collections of an in-memory, intermediate form represented by the collections of VMapPair
+ *         objects. Good to use while generating mapping which will then be converted into on-disk VMap
+ *         "Block" format.
+ *
+ *
+ * The meat of the API is the helper classes which work with these two formats, in pairs of a reader
+ * and writer for each format:
+ *
+ *      1. VMapPairWriter:     Helper class for generating and storing VMapPairs to be read with a VMapPairReader
+ *      2. VMapPairReader:     Helper class for reading collections of VMapPairs written by a VMapPairReader (NB: You will usually use the VMapPairReader constructor which accepts the VMapPairWriter you used to collect your pairs)
+ *
+ *      3. VMapBlockReader:    Helper class for reading on-disk VMap "Blocks" as they are stored in your Flexible Tables.
+ *      4. VMapBlockWriter:    Collection of static methods for writing collections of VMapPairs written by a VMapPairReader (NB: You will usually use the convert_vmap() method which accepts the VMapPairWriter you used to collect your pairs)
+ *
+ *
+ * In addition, the API contains a number of string helpers you are welcome to use for trimming
+ * whitespace and comparing case-insensitively.
+ *
+ * See the source code of FlexTable parsers in src/* for actual code that leverages this API functionality.
+ *
+ *
+ */

@@ -1,0 +1,156 @@
+Installing Test FlexTable library and functions...
+CREATE LIBRARY
+CREATE PARSER FUNCTION
+CREATE PARSER FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE TRANSFORM FUNCTION
+CREATE TRANSFORM FUNCTION
+Running test FlexTable queries...
+CREATE TABLE
+ OUTPUT 
+--------
+      1
+(1 row)
+
+     name     |   type   | height | hike_safety 
+--------------+----------+--------+-------------
+ Mt St Helens | volcano  |        | 15.4
+ Everest      | mountain | 29029  | 34.1
+ Matterhorn   | mountain | 4478   | 
+(3 rows)
+
+                                           TestMapToString                                            
+------------------------------------------------------------------------------------------------------
+ {
+   "hike_safety" : "15.4",
+   "name" : "Mt St Helens",
+   "type" : "volcano"
+}
+
+ {
+   "height" : "29029",
+   "hike_safety" : "34.1",
+   "name" : "Everest",
+   "type" : "mountain"
+}
+
+ {
+   "height" : "4478",
+   "name" : "Matterhorn",
+   "type" : "mountain"
+}
+
+(3 rows)
+
+     name     | TestMapContainsKey 
+--------------+--------------------
+ Mt St Helens | f
+ Everest      | t
+ Matterhorn   | t
+(3 rows)
+
+    keys     
+-------------
+ hike_safety
+ name
+ type
+ height
+ hike_safety
+ name
+ type
+ height
+ name
+ type
+(10 rows)
+
+    values    
+--------------
+ 15.4
+ Mt St Helens
+ volcano
+ 29029
+ 34.1
+ Everest
+ mountain
+ 4478
+ Matterhorn
+ mountain
+(10 rows)
+
+              compute_flextable_keys               
+---------------------------------------------------
+ Please see public.mountains_keys for updated keys
+(1 row)
+
+  key_name   | frequency | data_type_guess 
+-------------+-----------+-----------------
+ height      |         2 | Integer
+ hike_safety |         2 | Numeric(6,2)
+ name        |         3 | Varchar(24)
+ type        |         3 | Varchar(20)
+(4 rows)
+
+                 build_flextable_view                 
+------------------------------------------------------
+ The view public.mountains_view is ready for querying
+(1 row)
+
+                     List of View Fields
+ Schema |      View      |   Column    |     Type     | Size 
+--------+----------------+-------------+--------------+------
+ public | mountains_view | name        | varchar(24)  |   24
+ public | mountains_view | type        | varchar(20)  |   20
+ public | mountains_view | height      | int          |    8
+ public | mountains_view | hike_safety | numeric(6,2) |    8
+(4 rows)
+
+     name     |   type   | height | hike_safety 
+--------------+----------+--------+-------------
+ Mt St Helens | volcano  |        |       15.40
+ Everest      | mountain |  29029 |       34.10
+ Matterhorn   | mountain |   4478 |            
+(3 rows)
+
+                                                                                                           materialize_flextable_columns                                                                                                           
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ The following columns were added to the table public.mountains:
+	name
+	type
+For more details, run the following query:
+SELECT * FROM v_catalog.materialize_flextable_columns_results WHERE table_schema = 'public' and table_name = 'mountains';
+
+(1 row)
+
+     table_id      | table_schema | table_name |         creation_time         | key_name | status |      message       
+-------------------+--------------+------------+-------------------------------+----------+--------+--------------------
+ 45035996273743060 | public       | mountains  | 2016-07-08 12:28:24.289344-04 | name     | ADDED  | Added successfully
+ 45035996273743060 | public       | mountains  | 2016-07-08 12:28:24.289528-04 | type     | ADDED  | Added successfully
+(2 rows)
+
+                                                                         List of Fields by Tables
+ Schema |   Table   |    Column    |          Type          |  Size  |                           Default                           | Not Null | Primary Key | Foreign Key 
+--------+-----------+--------------+------------------------+--------+-------------------------------------------------------------+----------+-------------+-------------
+ public | mountains | __identity__ | int                    |      8 |                                                             | t        | f           | 
+ public | mountains | __raw__      | long varbinary(130000) | 130000 |                                                             | t        | f           | 
+ public | mountains | name         | varchar(24)            |     24 | (public.MapLookup(mountains.__raw__, 'name'))::!varchar(24) | f        | f           | 
+ public | mountains | type         | varchar(20)            |     20 | (public.MapLookup(mountains.__raw__, 'type'))::!varchar(20) | f        | f           | 
+(4 rows)
+
+      column_id      | column_name  |       data_type        | data_type_id | data_type_length |                       column_default                        
+---------------------+--------------+------------------------+--------------+------------------+-------------------------------------------------------------
+ 45035996273743060-1 | __identity__ | int                    |            6 |                8 | 
+ 45035996273743060-2 | __raw__      | long varbinary(130000) |          116 |           130000 | 
+ 45035996273743060-3 | name         | varchar(24)            |            9 |               24 | (public.MapLookup(mountains.__raw__, 'name'))::!varchar(24)
+ 45035996273743060-4 | type         | varchar(20)            |            9 |               20 | (public.MapLookup(mountains.__raw__, 'type'))::!varchar(20)
+(4 rows)
+
+DROP TABLE
+Uninstalling Test FlexTable library and functions...
+DROP PARSER
+DROP PARSER
+DROP FUNCTION
+DROP FUNCTION
+DROP TRANSFORM FUNCTION
+DROP TRANSFORM FUNCTION
+DROP LIBRARY

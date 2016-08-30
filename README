@@ -1,0 +1,103 @@
+===================================================================================
+HPE Vertica Flexible Table Package
+
+Copyright (c) 2005-2016 Hewlett Packard Enterprise Development LP. All rights reserved.
+====================================================================================
+
+CONTENTS
+1. Directory Structure
+2. Compiling FlexTable Package
+3. Testing FlexTable Package
+4. Flex VMap API Usage
+5. Generating Documentation
+6. License Type
+
+
+----------------------------
+1. DIRECTORY STRUCTURE
+----------------------------
+LICENSE
+    License type
+README
+    This file
+doc/
+    FlexTable VMAP API documentation
+third-party/
+    FlexTable parser dependencies
+makefile
+    Makefile to build and test FlexTable library
+src/
+    FlexTable VMAP API and parser source code
+test/
+    FlexTable tests
+
+
+----------------------------
+2. COMPILING FLEXTABLE PACKAGE
+----------------------------
+
+To compile the FlexTable library, execute:
+
+    make
+
+from your FlexTable checkout directory.
+It will generate a shared library in this location (by default)
+
+    ./lib/flextable_package.so
+
+By default, the Flex Avro Parser is not compiled. This parser depends on the Boost C++ library, which is not included in the FlexTable source code bundle.
+
+Compiling Flex Avro Parser
+----------------------------
+
+Download the C++ Boost library version 1.50.0 from their website at www.boost.org; please download the archive with extension '.tar.gz'. The Avro parser has been tested with that version, but it may also work with later versions.
+
+Copy the downloaded file to this location:
+./third-party/boost/boost_1_50_0.tar.gz
+
+Then, compile the FlexTable library once more
+
+    make
+
+The shared library now should include the Flex Avro parser.
+
+
+----------------------------
+3. TESTING FLEXTABLE PACKAGE
+----------------------------
+
+After compiling the FlexTable library, you can test it by executing this command from your checkout directory.
+
+    make flex_test
+
+The test creates a subset of Flex functions to load and query semi-structured data. You need to be a superuser in order to run the FlexTable tests as it creates a library and functions in your database.
+
+
+----------------------------
+4. FLEX VMAP API USAGE
+----------------------------
+
+To use the VMap API, include this header file
+
+    src/VMap.h
+
+in your code, and make sure that VMap.cpp is compiled along with the rest of your source files.
+
+
+----------------------------
+5. GENERATING DOCUMENTATION
+----------------------------
+
+We use DOxygen, an automatic documentation generator from source code, to create documentation in HTML format. To generate the documentation, execute this command from your checkout directory.
+
+    make doc
+
+This command creates HTML documentation at:
+    doc/html/index.htm
+
+
+----------------------------
+6. LICENSE TYPE
+----------------------------
+
+Please check the LICENSE file.
